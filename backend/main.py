@@ -119,6 +119,7 @@ class SpinResult(BaseModel):
     timestamp: int 
     quote: str
     checksum: str
+    raw_reportdata: str
     report: Optional[Quote]
 
 
@@ -127,12 +128,13 @@ app = FastAPI()
 
 @app.post('/slot_machine/spin')
 async def spin_slot_Machine():
-    client = AsyncTappdClient()
+    client = AsyncTappdClient('/Users/leechael/workshop/phala/tappd-simulator/tappd.sock')
 
     reels = [randrange(0, 15) for _ in range(3)]
     now = datetime.now().strftime('%s')
     payload = json.dumps(dict(reels=reels, timestamp=now))
     print(payload)
+    raw_reportdata = hashlib.sha384(payload.encode()).hexdigest()
     quoted = await client.tdx_quote(payload)
     print(quoted.quote)
     _, report = Quote.safeParse(bytes.fromhex(quoted.quote[2:]))
@@ -141,5 +143,5 @@ async def spin_slot_Machine():
     print(report)
 
     result = SpinResult(reels=reels, timestamp=now, quote=quoted.quote.encode(),
-                        checksum=checksum, report=report)
+                        checksum=checksum, report=report, raw_reportdata=raw_reportdata)
     return JSONResponse(content=result.dict())
