@@ -127,7 +127,7 @@ app = FastAPI()
 
 @app.post('/slot_machine/spin')
 async def spin_slot_Machine():
-    client = AsyncTappdClient('/Users/leechael/workshop/phala/tappd-simulator/tappd.sock')
+    client = AsyncTappdClient()
 
     reels = [randrange(0, 15) for _ in range(3)]
     now = datetime.now().strftime('%s')
