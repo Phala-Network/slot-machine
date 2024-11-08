@@ -1,0 +1,62 @@
+/**
+ * @see https://www.electron.build/configuration/configuration
+ */
+{
+  "appId": "YourAppID",
+  "asar": true,
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist-electron",
+    "dist"
+  ],
+  "extraResources": [
+    {
+      "from": "dist/models",
+      "to": "models"
+    },
+    {
+      "from": "dist/images",
+      "to": "images"
+    },
+    {
+      "from": "sounds",
+      "to": "sounds"
+    },
+    {
+      "from": "report.html",
+      "to": "report.html"
+    }
+  ],
+  "mac": {
+    "artifactName": "${productName}_${version}.${ext}",
+    "target": [
+      "dmg",
+      "zip"
+    ],
+    "electronLanguages": ["en"]
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}_${version}.${ext}",
+    "electronLanguages": ["en"]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  },
+
+  "generateUpdatesFilesForAllChannels": false,
+
+  "publish": null
+}

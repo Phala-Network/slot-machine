@@ -1,0 +1,73 @@
+{
+  "name": "TEE-slot-machine",
+  "version": "0.0.3",
+  "main": "dist-electron/main/index.js",
+  "description": "A simple slot machine build with TEE",
+  "author": "Leechael Yim <yanleech@gmail.com>",
+  "license": "Apache-2.0",
+  "private": true,
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder && electron-builder --win",
+    "preview": "vite preview",
+    "pree2e": "vite build --mode=test"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@iarna/toml": "^2.2.5",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.1",
+    "@radix-ui/react-toast": "^1.2.2",
+    "@react-spring/three": "^9.7.5",
+    "@react-three/drei": "^9.115.0",
+    "@react-three/fiber": "^8.17.10",
+    "@tanstack/react-router": "^1.79.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "electron-updater": "^6.1.8",
+    "formdata-node": "^6.0.3",
+    "handlebars": "^4.7.8",
+    "howler": "^2.2.4",
+    "jotai": "^2.10.1",
+    "lucide-react": "^0.454.0",
+    "ofetch": "^1.4.1",
+    "qrcode": "^1.5.4",
+    "ramda": "^0.30.1",
+    "react-hook-form": "^7.53.1",
+    "react-icons": "^5.3.0",
+    "rxjs": "^7.8.1",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.170.0",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/howler": "^2.2.12",
+    "@types/qrcode": "^1.5.5",
+    "@types/ramda": "^0.30.2",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.18",
+    "electron": "^29.1.1",
+    "electron-builder": "^24.13.3",
+    "postcss": "^8.4.35",
+    "postcss-import": "^16.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5",
+    "vite-plugin-electron": "^0.28.4",
+    "vite-plugin-electron-renderer": "^0.14.5"
+  }
+}
