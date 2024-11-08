@@ -7,6 +7,7 @@ import os from 'node:os'
 import { setup_config_handler } from './config'
 import { setup_quote_handler } from './quote'
 import { setup_networking } from './networking'
+import { setup_printing } from './printing'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -97,6 +98,7 @@ async function createWindow() {
   setup_config_handler(win)
   setup_quote_handler(win)
   setup_networking(win)
+  setup_printing(win)
 }
 
 app.whenReady().then(createWindow)

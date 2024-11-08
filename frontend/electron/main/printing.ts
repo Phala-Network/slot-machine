@@ -46,8 +46,16 @@ export function setup_printing(win: BrowserWindow) {
     //
     const printWindow = new BrowserWindow({ show: false })
     await printWindow.loadURL(`data:text/html;charset=utf8,${encodeURIComponent(fragment)}`)
-    printWindow.webContents.print({ silent: true, pageSize: "A4" }, (success, errType) => {
-      console.log('print callback: ', success, errType)
+    await new Promise((resolve, reject) => {
+      printWindow.webContents.print({ silent: true, pageSize: "A4" }, (success, errType) => {
+        if (errType) {
+          reject(errType)
+        } else {
+          resolve(success)
+        }
+      })
     })
+    printWindow.destroy()
+    printWindow.close()
   })
 }
