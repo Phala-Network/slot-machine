@@ -3,7 +3,6 @@ import { atomFamily } from 'jotai/utils'
 import { ofetch } from 'ofetch'
 import { Subject, merge } from 'rxjs'
 import { filter, map, scan } from 'rxjs/operators'
-import * as R from 'ramda'
 
 import { audioActionAtom, audioInstanceAtom } from './audioAtoms'
 export * from './settingsAtoms'
@@ -18,6 +17,7 @@ export interface ReelState {
 
 export type ReelStateAtom = PrimitiveAtom<ReelState>
 
+const isWinnerAtom = atom(false)
 
 interface InitEvent {
   type: 'init';
@@ -95,9 +95,9 @@ completion$.pipe(
   filter(event => event.type === 'finish')
 ).subscribe(async (state) => {
     await new Promise(r => setTimeout(r, 500))
-    const audioMgr = getDefaultStore().get(audioInstanceAtom)
-    const isWinner = R.all(R.equals(state.result[0]), state.result)
-    if (isWinner) {
+    const store = getDefaultStore()
+    const audioMgr = store.get(audioInstanceAtom)
+    if (store.get(isWinnerAtom)) {
       audioMgr.sfx.win?.play()
     }
 
@@ -178,6 +178,7 @@ export const slotMachineAtom = atom(
           console.log('begin get result from API')
           const result = await ofetch(settings.url, { method: 'POST' })
           console.log('result: ', result)
+          set(isWinnerAtom, result.is_winner)
           set(reel1Atom, { ...get(reel1Atom), spinUntil: result.reels[0] + 15, infiniteRolling: false })
           set(reel2Atom, { ...get(reel2Atom), spinUntil: result.reels[1] + 15 })
           set(reel3Atom, { ...get(reel3Atom), spinUntil: result.reels[2] + 15 })
