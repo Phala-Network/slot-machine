@@ -177,11 +177,11 @@ export const slotMachineAtom = atom(
         } else {
           console.log('begin get result from API')
           const result = await ofetch(settings.url, { method: 'POST' })
-          console.log('result: ', result)
+          console.log('slots: ', result.slots, result)
           set(isWinnerAtom, result.is_winner)
-          set(reel1Atom, { ...get(reel1Atom), spinUntil: result.reels[0] + 15, infiniteRolling: false })
-          set(reel2Atom, { ...get(reel2Atom), spinUntil: result.reels[1] + 15 })
-          set(reel3Atom, { ...get(reel3Atom), spinUntil: result.reels[2] + 15 })
+          set(reel1Atom, { ...get(reel1Atom), spinUntil: result.slots[0] + 15, infiniteRolling: false })
+          set(reel2Atom, { ...get(reel2Atom), spinUntil: result.slots[1] + 15 })
+          set(reel3Atom, { ...get(reel3Atom), spinUntil: result.slots[2] + 15 })
 
           const tasks = [
             window.ipcRenderer.invoke('save-quote', result),

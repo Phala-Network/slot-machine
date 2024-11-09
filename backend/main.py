@@ -201,13 +201,16 @@ class SpinMachine:
             self._normalize_position(pos + 1, size)
             for pos, size in zip(internal_positions, self.reel_sizes)
         ]
+        print('display_positions', display_positions)
 
         winning_positions = [
             self._get_winning_position(pos, size)
             for pos, size in zip(display_positions, self.reel_sizes)
         ]
+        print('winning_positions', winning_positions)
 
         combination = self._get_combination(winning_positions)
+        print('combination', combination)
         is_winner = combination in self.winning_combinations
 
         assert all(isinstance(pos, int) and 1 <= pos <= size
@@ -217,7 +220,7 @@ class SpinMachine:
         return is_winner, display_positions
 
 class SpinResult(BaseModel):
-    reels: List[int]
+    slots: List[int]
     timestamp: int
     quote: str
     checksum: str
@@ -244,17 +247,17 @@ async def spin_slot_Machine():
         'ccc': 0.03
     }
     machine = SpinMachine(reels, target_probabilities)
-    is_winner, picked = machine.spin()
-    print(picked, is_winner)
+    is_winner, slots = machine.spin()
+    print(slots, is_winner)
 
     now = datetime.now().strftime('%s')
-    payload = json.dumps(dict(reels=picked, timestamp=now))
+    payload = json.dumps(dict(slots=slots, timestamp=now))
     raw_reportdata = hashlib.sha384(payload.encode()).hexdigest()
     quoted = await client.tdx_quote(payload)
     _, report = Quote.safeParse(bytes.fromhex(quoted.quote[2:]))
     checksum = hashlib.sha256(str(report.dict()).encode()).hexdigest()
 
-    result = SpinResult(reels=picked, timestamp=now, quote=quoted.quote.encode(),
+    result = SpinResult(slots=slots, timestamp=now, quote=quoted.quote.encode(),
                         checksum=checksum, report=report, raw_reportdata=raw_reportdata,
                         is_winner=is_winner)
     return JSONResponse(content=result.dict())
