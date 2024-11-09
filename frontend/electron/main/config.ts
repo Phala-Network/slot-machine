@@ -39,6 +39,7 @@ export function setup_config_handler(win: BrowserWindow) {
     url: 'https://agents.phala.network/slot_machine/spin',
     upload_quote: true,
     print_report: true,
+    debug_flag: false,
   })
 
   win.webContents.send('config-load', config)
