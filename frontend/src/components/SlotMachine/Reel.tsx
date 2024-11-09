@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { type ReelStateAtom, countSubject } from '@/atoms'
 
+// Because of we have 8 items per roll
 export const WHEEL_SEGMENT = Math.PI / 4
 
 type GLTFResult = GLTF & {
@@ -32,12 +33,12 @@ const Reel = ({ stateAtom, ...props }: ReelProps): JSX.Element => {
   const colorMap = useLoader(THREE.TextureLoader, `${resource_path}images/reel_${id}.png`)
 
   const [x, setX] = useState(0)
-  const [segment, setSegment] = useState(0)
+  const [targetRotationX, setTarget] = useState(0)
 
   useEffect(() => {
     if (spinUntil !== undefined) {
       setX(0)
-      setSegment(0)
+      setTarget((spinUntil - 0) * WHEEL_SEGMENT)
     }
   }, [spinUntil])
 
@@ -45,18 +46,14 @@ const Reel = ({ stateAtom, ...props }: ReelProps): JSX.Element => {
     const rotationSpeed = 0.15
 
     if (infiniteRolling) {
-      const next = x + rotationSpeed
-      setX(next)
-      setSegment(Math.floor(next / WHEEL_SEGMENT))
+      setX(x + rotationSpeed)
     } else if (spinUntil !== undefined) {
-      const targetRotationX = Math.ceil((spinUntil - segment) * WHEEL_SEGMENT)
       if (x < targetRotationX) {
-        const next = x + rotationSpeed
-        setX(next)
-        setSegment(Math.floor(next / WHEEL_SEGMENT))
+        setX(x + rotationSpeed)
       }
       else if (x >= targetRotationX) {
         setState(prev => ({ ...prev, spinUntil: undefined }))
+        setX(targetRotationX)
         countSubject.next({ type: 'count', value: targetRotationX, id })
       }
     }
@@ -65,24 +62,18 @@ const Reel = ({ stateAtom, ...props }: ReelProps): JSX.Element => {
   return (
     <group
       {...props}
-      scale={[10, 10, 10]}
-      rotation={[x, 0, 0]}
+      rotation={[x, 0, -Math.PI / 2]}
       dispose={null}
     >
-      <group
-        rotation={[segment * WHEEL_SEGMENT - 0.2, 0, -Math.PI / 2]}
-        scale={[1, 0.29, 1]}
-      >
-        <mesh castShadow receiveShadow geometry={nodes.Cylinder.geometry}>
-          <meshStandardMaterial map={colorMap} />
-        </mesh>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Cylinder_1.geometry}
-          material={materials["Material.002"]}
-        />
-      </group>
+      <mesh castShadow receiveShadow geometry={nodes.Cylinder.geometry}>
+        <meshStandardMaterial map={colorMap} />
+      </mesh>
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cylinder_1.geometry}
+        material={materials["Material.002"]}
+      />
     </group>
   )
 }

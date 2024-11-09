@@ -167,9 +167,13 @@ export const slotMachineAtom = atom(
         // Local Spin means debug mode and no need for API server.
         //
         if (settings.debug_flag) {
-          set(reel1Atom, { ...get(reel1Atom), spinUntil: getRandomStopSegment(), infiniteRolling: false })
-          set(reel2Atom, { ...get(reel2Atom), spinUntil: getRandomStopSegment() })
-          set(reel3Atom, { ...get(reel3Atom), spinUntil: getRandomStopSegment() })
+          const [reel1, reel2, reel3] = [getRandomStopSegment(), getRandomStopSegment(), getRandomStopSegment()]
+          // Let infinite rolling runs 0.75s
+          await new Promise(r => setTimeout(r, 750))
+          console.log('spin result', reel1, reel2, reel3)
+          set(reel1Atom, { ...get(reel1Atom), spinUntil: reel1, infiniteRolling: false })
+          set(reel2Atom, { ...get(reel2Atom), spinUntil: reel2 })
+          set(reel3Atom, { ...get(reel3Atom), spinUntil: reel3 })
         } else {
           console.log('begin get result from API')
           const result = await ofetch(settings.url, { method: 'POST' })
@@ -198,7 +202,7 @@ export const slotMachineAtom = atom(
   }
 )
 
-function getRandomStopSegment(max: number = 30, min: number = 15) {
+function getRandomStopSegment(max: number = 7, min: number = 0) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
