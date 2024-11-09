@@ -232,21 +232,27 @@ class SpinResult(BaseModel):
 app = FastAPI()
 
 
+#
+# One spin machine instance for all requests.
+#
+reels = [
+    ['a', 'b', 'c', 'd', 'e', 'f', 'a', 'b'],
+    ['e', 'f', 'c', 'd', 'e', 'f', 'a', 'b'],
+    ['d', 'e', 'c', 'd', 'e', 'f', 'a', 'b'],
+]
+target_probabilities = {
+    'aaa': 0.05,
+    'bbb': 0.10,
+    'ccc': 0.03
+}
+machine = SpinMachine(reels, target_probabilities)
+
+
 @app.post('/slot_machine/spin')
 async def spin_slot_Machine():
     client = AsyncTappdClient()
 
-    reels = [
-        ['a', 'b', 'c', 'd', 'e', 'f', 'a', 'b'],
-        ['e', 'f', 'c', 'd', 'e', 'f', 'a', 'b'],
-        ['d', 'e', 'c', 'd', 'e', 'f', 'a', 'b'],
-    ]
-    target_probabilities = {
-        'aaa': 0.05,
-        'bbb': 0.10,
-        'ccc': 0.03
-    }
-    machine = SpinMachine(reels, target_probabilities)
+
     is_winner, slots = machine.spin()
     print(slots, is_winner)
 
