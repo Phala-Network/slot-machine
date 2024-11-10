@@ -1,6 +1,6 @@
 {
   "name": "TEE-slot-machine",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "dist-electron/main/index.js",
   "description": "A simple slot machine build with TEE",
   "author": "Leechael Yim <yanleech@gmail.com>",

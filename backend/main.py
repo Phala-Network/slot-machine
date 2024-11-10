@@ -236,14 +236,20 @@ app = FastAPI()
 # One spin machine instance for all requests.
 #
 reels = [
-    ['a', 'b', 'c', 'd', 'e', 'f', 'a', 'b'],
-    ['e', 'f', 'c', 'd', 'e', 'f', 'a', 'b'],
-    ['d', 'e', 'c', 'd', 'e', 'f', 'a', 'b'],
+    # x, zk, tdx, ai, sgx, eth, amd, nvidia
+    ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+    ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+    ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
 ]
 target_probabilities = {
     'aaa': 0.05,
-    'bbb': 0.10,
-    'ccc': 0.03
+    'bbb': 0.05,
+    'ccc': 0.05,
+    'ddd': 0.05,
+    'eee': 0.10,
+    'fff': 0.05,
+    'ggg': 0.03,
+    'hhh': 0.02,
 }
 machine = SpinMachine(reels, target_probabilities)
 

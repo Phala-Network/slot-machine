@@ -7,7 +7,7 @@ import Reel from "./Reel"
 const SlotMachine = () => {
   useAtomValue(slotMachineAtom)
   return (
-    <Canvas camera={{ fov: 75, position: [0, 0, 18] }} className="max-w-full max-h-full">
+    <Canvas camera={{ fov: 75, position: [0, 0, 19] }} className="max-w-full max-h-full">
       <color args={["#141417"]} attach="background" />
       <directionalLight position={[-2, 3, 2]} intensity={1} />
       <directionalLight position={[2, 3, 2]} intensity={1} />
