@@ -16,9 +16,7 @@ type SettingsAtomActions =
 
 export const settingsAtom = (function() {
   const theAtom = atom<Settings>({
-    // export const apiEndpointAtom = atom('https://agents.phala.network/slot_machine/spin')
-    // export const apiEndpointAtom = atom('http://127.0.0.1:8000/slot_machine/spin')
-    url: 'http://127.0.0.1:8000/slot_machine/spin',
+    url: 'https://bfe6f9b35eb445410f1e9125dda3b0e54ffb665c.app.kvin.wang:9010/slot_machine/spin',
     upload_quote: true,
     print_report: true,
     debug_flag: false,

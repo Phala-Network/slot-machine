@@ -3,6 +3,7 @@ import fs from 'fs'
 
 import { type BrowserWindow, ipcMain } from 'electron'
 import { ofetch } from 'ofetch'
+import { ProxyAgent } from "undici"
 
 function hexToUint8Array(hex: string) {
   hex = hex.trim();
@@ -63,8 +64,10 @@ export function setup_quote_handler(_: BrowserWindow) {
       {
         method: "POST",
         body: formData,
+        // dispatcher: new ProxyAgent('http://127.0.0.1:6152')
       },
     )
     console.log('upload result', uploadResult)
+    return uploadResult.checksum
   })
 }

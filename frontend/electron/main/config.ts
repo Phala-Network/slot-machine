@@ -36,7 +36,7 @@ export function setup_config_handler(win: BrowserWindow) {
   console.log('config file path:', file_path)
 
   let config = read_or_create_config_file(file_path, {
-    url: 'https://agents.phala.network/slot_machine/spin',
+    url: 'https://bfe6f9b35eb445410f1e9125dda3b0e54ffb665c.app.kvin.wang:9010/slot_machine/spin',
     upload_quote: true,
     print_report: true,
     debug_flag: false,

@@ -55,7 +55,7 @@ export function setup_printing(win: BrowserWindow) {
         }
       })
     })
-    printWindow.destroy()
     printWindow.close()
+    printWindow.destroy()
   })
 }

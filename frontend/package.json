@@ -1,6 +1,6 @@
 {
   "name": "TEE-slot-machine",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "main": "dist-electron/main/index.js",
   "description": "A simple slot machine build with TEE",
   "author": "Leechael Yim <yanleech@gmail.com>",
@@ -46,6 +46,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.170.0",
+    "undici": "^6.20.1",
     "zod": "^3.23.8",
     "zustand": "^5.0.1"
   },

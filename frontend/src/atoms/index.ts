@@ -176,26 +176,27 @@ export const slotMachineAtom = atom(
           set(reel3Atom, { ...get(reel3Atom), spinUntil: reel3 })
         } else {
           console.log('begin get result from API')
-          const result = await ofetch(settings.url, { method: 'POST' })
-          console.log('slots: ', result.slots, result)
-          set(isWinnerAtom, result.is_winner)
-          set(reel1Atom, { ...get(reel1Atom), spinUntil: result.slots[0] + 15, infiniteRolling: false })
-          set(reel2Atom, { ...get(reel2Atom), spinUntil: result.slots[1] + 15 })
-          set(reel3Atom, { ...get(reel3Atom), spinUntil: result.slots[2] + 15 })
-
-          const tasks = [
-            window.ipcRenderer.invoke('save-quote', result),
-            settings.upload_quote ? window.ipcRenderer.invoke('upload-quote', result) : Promise.resolve(null),
-            settings.print_report ? window.ipcRenderer.invoke('print-report', result) : Promise.resolve(null),
-          ]
           try {
-            await Promise.all(tasks)
+            const result = await ofetch(settings.url, { method: 'POST' })
+            console.log('slots: ', result.slots, result)
+            set(isWinnerAtom, result.is_winner)
+            set(reel1Atom, { ...get(reel1Atom), spinUntil: result.slots[0] + 15, infiniteRolling: false })
+            set(reel2Atom, { ...get(reel2Atom), spinUntil: result.slots[1] + 15 })
+            set(reel3Atom, { ...get(reel3Atom), spinUntil: result.slots[2] + 15 })
+
+            await window.ipcRenderer.invoke('save-quote', result)
+            if (settings.upload_quote) {
+              const checksum = await window.ipcRenderer.invoke('upload-quote', result)
+              if (settings.print_report) {
+                await window.ipcRenderer.invoke('print-report', { ...result, checksum })
+              }
+            }
           } catch (_) {
             // Silent the errors.
+          } finally {
+            set(isRunningAtom, false)
           }
         }
-
-        set(isRunningAtom, false)
       } else {
         console.log('running, skip')
       }
